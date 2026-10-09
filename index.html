@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>гкарен</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            background-color: #000;
+        }
+        body {
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            gap: 20px;
+        }
+        img, video {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 10px;
+            display: block;
+        }
+        .empty {
+            color: #666;
+            font-size: 1.2em;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="feed"></div>
+
+    <script>
+        fetch("files.json")
+            .then(res => res.json())
+            .then(data => {
+                const feed = document.getElementById("feed");
+                const items = [];
+
+                (data.images || []).forEach(src => items.push({ type: "img", src }));
+                (data.gifs   || []).forEach(src => items.push({ type: "img", src }));
+                (data.videos || []).forEach(src => items.push({ type: "video", src }));
+
+                if (items.length === 0) {
+                    feed.innerHTML = '<p class="empty">Пока пусто</p>';
+                    return;
+                }
+
+                items.forEach(item => {
+                    let el;
+                    if (item.type === "img") {
+                        el = document.createElement("img");
+                        el.src = item.src;
+                        el.alt = "гкарен";
+                        el.loading = "lazy";
+                    } else {
+                        el = document.createElement("video");
+                        el.src = item.src;
+                        el.controls = true;
+                        el.preload = "metadata";
+                    }
+                    feed.appendChild(el);
+                });
+            })
+            .catch(err => {
+                document.getElementById("feed").innerHTML =
+                    '<p class="empty">Ошибка загрузки files.json</p>';
+                console.error(err);
+            });
+    </script>
+
+</body>
+</html>
