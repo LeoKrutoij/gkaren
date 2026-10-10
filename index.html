@@ -12,6 +12,8 @@
             color: #fff;
             font-family: Arial, sans-serif;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* ВЕРХНЯЯ ПАНЕЛЬ */
@@ -153,6 +155,17 @@
             text-align: center;
             width: 100%;
         }
+
+        /* ФИНАЛЬНАЯ КАРТИНКА ВНИЗУ */
+        .footer-img {
+            width: 100%;
+            height: 30vh;
+            object-fit: fill;
+            display: block;
+            margin-top: 40px;
+            user-select: none;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -208,6 +221,9 @@
     <div class="feed" id="feed-videos"></div>
 </section>
 
+<!-- ФИНАЛЬНАЯ КАРТИНКА (видна на всех вкладках, всегда внизу) -->
+<img src="content/timudakatheend.jpg" alt="the end" class="footer-img">
+
 <script>
     // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
     document.querySelectorAll(".tab").forEach(btn => {
@@ -237,7 +253,6 @@
     sfx.volume = 0.7;
 
     document.getElementById("discord-link").addEventListener("click", () => {
-        // сброс и запуск с начала
         try {
             sfx.pause();
             sfx.currentTime = 0;
@@ -245,7 +260,7 @@
         } catch (e) {}
     });
 
-    // ОСТАНОВКА ЗВУКА, КОГДА ВОЗВРАЩАЕШЬСЯ НА ВКЛАДКУ САЙТА
+    // ОСТАНОВКА ЗВУКА ПРИ ВОЗВРАЩЕНИИ НА САЙТ
     document.addEventListener("visibilitychange", () => {
         if (!document.hidden) {
             try {
