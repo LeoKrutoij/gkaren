@@ -20,6 +20,7 @@
             transition: color 0.5s;
         }
 
+        /* ВЕРХНЯЯ ПАНЕЛЬ */
         nav {
             position: sticky;
             top: 0;
@@ -71,6 +72,7 @@
         nav .tab:hover { background: #1a1a1a; color: #fff; }
         nav .tab.active { background: #fff; color: #000; border-color: #fff; }
 
+        /* КНОПКА DISCORD */
         nav .discord-btn {
             display: inline-flex;
             align-items: center;
@@ -86,9 +88,11 @@
         }
         nav .discord-btn:hover { background: #4752c4; }
 
+        /* СТРАНИЦЫ */
         .page { display: none; padding: 20px 10px; }
         .page.active { display: block; }
 
+        /* ГЛАВНАЯ */
         .home-wrap {
             display: flex;
             flex-direction: column;
@@ -140,6 +144,43 @@
         .switch input:checked + .slider { background: #4caf50; }
         .switch input:checked + .slider:before { transform: translateX(22px); }
 
+        /* РАЗДЕЛИТЕЛЬ */
+        .divider {
+            width: 80%;
+            max-width: 900px;
+            height: 1px;
+            background: #333;
+            margin: 30px auto;
+        }
+
+        /* ЗАГОЛОВКИ РАЗДЕЛОВ */
+        .section-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            margin: 20px 0 10px;
+        }
+
+        /* YOUTUBE-БЛОК */
+        .yt-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .yt-block iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+            border-radius: 12px;
+            display: block;
+        }
+
+        /* ЛЕНТА */
         .feed {
             display: flex;
             flex-direction: column;
@@ -160,6 +201,7 @@
             width: 100%;
         }
 
+        /* ФИНАЛЬНАЯ КАРТИНКА ВНИЗУ */
         .footer-img {
             width: 100%;
             height: 30vh;
@@ -170,7 +212,7 @@
             pointer-events: none;
         }
 
-        /* ДЬЯВОЛЬСКИЙ РЕЖИМ */
+        /* ====== ДЬЯВОЛЬСКИЙ РЕЖИМ ====== */
         body.devil-mode {
             background: radial-gradient(circle at top, #3a0000 0%, #000 70%);
             color: #ff4444;
@@ -200,6 +242,12 @@
         body.devil-mode .footer-img {
             filter: hue-rotate(-30deg) saturate(2) brightness(0.8);
         }
+        body.devil-mode .divider {
+            background: #660000;
+        }
+        body.devil-mode .section-title {
+            color: #ff2222;
+        }
     </style>
 </head>
 <body>
@@ -225,8 +273,11 @@
     </a>
 </nav>
 
+<!-- ГЛАВНАЯ -->
 <section class="page active" id="page-home">
     <div class="home-wrap">
+
+        <!-- ВИДЕО С 4K ТУМБЛЕРОМ -->
         <video id="home-video" class="home-video"
                autoplay muted loop playsinline controls
                src="content/gkarenteaser.mp4"></video>
@@ -237,25 +288,62 @@
                 <span class="slider"></span>
             </span>
         </label>
+
+        <!-- РАЗДЕЛИТЕЛЬ -->
+        <div class="divider"></div>
+
+        <!-- КТО ТАКОЙ ГКАРЕН -->
+        <h2 class="section-title">Кто такой Гкарен?</h2>
+        <div class="yt-block">
+            <iframe
+                src="https://www.youtube.com/embed/VPiMgd9SShI"
+                title="Кто такой Гкарен"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+
+        <!-- РАЗДЕЛИТЕЛЬ -->
+        <div class="divider"></div>
+
+        <!-- ВИДЕО ГКАРЕНА -->
+        <h2 class="section-title">Видео Гкарена</h2>
+        <div class="yt-block">
+            <iframe
+                src="https://www.youtube.com/embed/Kb-CfA-b9ds"
+                title="Видео Гкарена 1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            <iframe
+                src="https://www.youtube.com/embed/xs15PaOr0y4"
+                title="Видео Гкарена 2"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+
     </div>
 </section>
 
+<!-- ФОТО -->
 <section class="page" id="page-images">
     <div class="feed" id="feed-images"></div>
 </section>
 
+<!-- ГИФКИ -->
 <section class="page" id="page-gifs">
     <div class="feed" id="feed-gifs"></div>
 </section>
 
+<!-- ВИДЕО -->
 <section class="page" id="page-videos">
     <div class="feed" id="feed-videos"></div>
 </section>
 
+<!-- МЕМЫ -->
 <section class="page" id="page-memes">
     <div class="feed" id="feed-memes"></div>
 </section>
 
+<!-- ФИНАЛЬНАЯ КАРТИНКА -->
 <img src="content/timudakatheend.jpg" alt="the end" class="footer-img">
 
 <script>
@@ -281,7 +369,7 @@
         homeVideo.play().catch(() => {});
     });
 
-    // SFX DISCORD
+    // SFX ПРИ ПЕРЕХОДЕ В DISCORD
     const sfx = new Audio("sfx/gigamegateam.mp3");
     sfx.preload = "auto";
     sfx.volume = 0.7;
@@ -294,6 +382,7 @@
         } catch (e) {}
     });
 
+    // ОСТАНОВКА ЗВУКА ПРИ ВОЗВРАЩЕНИИ НА САЙТ
     document.addEventListener("visibilitychange", () => {
         if (!document.hidden) {
             try {
@@ -303,7 +392,7 @@
         }
     });
 
-    // ПАСХАЛКА
+    // ====== ПАСХАЛКА: 10 КЛИКОВ ПО ЛОГОТИПУ ======
     const brandLogo = document.getElementById("brand-logo");
     const brandImg = document.getElementById("brand-img");
     const brandText = document.getElementById("brand-text");
