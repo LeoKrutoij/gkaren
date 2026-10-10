@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гкарен</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link id="favicon-link" rel="icon" type="image/png" href="favicon.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body {
@@ -313,12 +313,16 @@
     // ====== ПАСХАЛКА: 10 КЛИКОВ ПО ЛОГОТИПУ ======
     const brandLogo = document.getElementById("brand-logo");
     const brandImg = document.getElementById("brand-img");
+    const brandText = document.getElementById("brand-text");
+    const faviconLink = document.getElementById("favicon-link");
     const devilSound = new Audio("sfx/gkarendyavoldrop.mp3");
     devilSound.preload = "auto";
     devilSound.volume = 0.8;
 
     const NORMAL_IMG = "favicon.png";
     const DEVIL_IMG  = "content/favicondyavol.png";
+    const NORMAL_TEXT = "gkaren.com";
+    const DEVIL_TEXT  = "Гкарен дьявол!!!";
 
     let clickCount = 0;
     let devilMode = false;
@@ -332,15 +336,21 @@
             devilMode = !devilMode;
 
             if (devilMode) {
+                // ВКЛ ДЬЯВОЛА
                 document.body.classList.add("devil-mode");
                 document.title = "Гкарен дьявол!!!";
                 brandImg.src = DEVIL_IMG;
+                brandText.textContent = DEVIL_TEXT;
+                faviconLink.href = DEVIL_IMG;   // иконка во вкладке браузера
                 devilSound.currentTime = 0;
                 devilSound.play().catch(() => {});
             } else {
+                // ВЫКЛ
                 document.body.classList.remove("devil-mode");
                 document.title = "Гкарен";
                 brandImg.src = NORMAL_IMG;
+                brandText.textContent = NORMAL_TEXT;
+                faviconLink.href = NORMAL_IMG;
                 devilSound.pause();
                 devilSound.currentTime = 0;
             }
