@@ -3,27 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>гкарен</title>
+    <title>Гкарен</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            background-color: #000;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { background: #000; }
         body {
             color: #fff;
             font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ВЕРХНЯЯ ПАНЕЛЬ */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 20px;
+            background: #111;
+            border-bottom: 1px solid #222;
+            flex-wrap: wrap;
+        }
+        nav .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #fff;
+            text-decoration: none;
+        }
+        nav .brand img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: block;
+        }
+        nav .tabs {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+        nav .tab {
+            background: transparent;
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: 0.2s;
+        }
+        nav .tab:hover { background: #1a1a1a; color: #fff; }
+        nav .tab.active { background: #fff; color: #000; border-color: #fff; }
+
+        /* СТРАНИЦЫ */
+        .page { display: none; padding: 20px 10px; }
+        .page.active { display: block; }
+
+        /* ГЛАВНАЯ */
+        .home-wrap {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 10px;
             gap: 20px;
         }
-        img, video {
+        .home-video {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 12px;
+            display: block;
+            background: #000;
+        }
+        .quality-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aaa;
+            font-size: 0.95em;
+            cursor: pointer;
+            user-select: none;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #333;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+        .slider:before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            top: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .switch input:checked + .slider { background: #4caf50; }
+        .switch input:checked + .slider:before { transform: translateX(22px); }
+
+        /* ЛЕНТА */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .feed img, .feed video {
             max-width: 90vw;
             max-height: 90vh;
             border-radius: 10px;
@@ -31,53 +132,128 @@
         }
         .empty {
             color: #666;
-            font-size: 1.2em;
+            font-size: 1.1em;
             margin-top: 40px;
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
-    <div id="feed"></div>
+<nav>
+    <a class="brand" href="#">
+        <img src="favicon.png" alt="logo">
+        <span>gkaren.com</span>
+    </a>
+    <div class="tabs">
+        <button class="tab active" data-page="home">Главная</button>
+        <button class="tab" data-page="images">Фото</button>
+        <button class="tab" data-page="gifs">Гифки</button>
+        <button class="tab" data-page="videos">Видео</button>
+    </div>
+</nav>
 
-    <script>
-        fetch("files.json")
-            .then(res => res.json())
-            .then(data => {
-                const feed = document.getElementById("feed");
-                const items = [];
+<!-- ГЛАВНАЯ -->
+<section class="page active" id="page-home">
+    <div class="home-wrap">
+        <video id="home-video" class="home-video"
+               autoplay muted loop playsinline controls
+               src="content/gkarenteaser.mp4"></video>
+        <label class="quality-toggle">
+            <span>4K качество</span>
+            <span class="switch">
+                <input type="checkbox" id="quality-toggle">
+                <span class="slider"></span>
+            </span>
+        </label>
+    </div>
+</section>
 
-                (data.images || []).forEach(src => items.push({ type: "img", src }));
-                (data.gifs   || []).forEach(src => items.push({ type: "img", src }));
-                (data.videos || []).forEach(src => items.push({ type: "video", src }));
+<!-- ФОТО -->
+<section class="page" id="page-images">
+    <div class="feed" id="feed-images"></div>
+</section>
 
-                if (items.length === 0) {
-                    feed.innerHTML = '<p class="empty">Пока пусто</p>';
-                    return;
-                }
+<!-- ГИФКИ -->
+<section class="page" id="page-gifs">
+    <div class="feed" id="feed-gifs"></div>
+</section>
 
-                items.forEach(item => {
-                    let el;
-                    if (item.type === "img") {
-                        el = document.createElement("img");
-                        el.src = item.src;
-                        el.alt = "гкарен";
-                        el.loading = "lazy";
-                    } else {
-                        el = document.createElement("video");
-                        el.src = item.src;
-                        el.controls = true;
-                        el.preload = "metadata";
-                    }
-                    feed.appendChild(el);
-                });
-            })
-            .catch(err => {
-                document.getElementById("feed").innerHTML =
-                    '<p class="empty">Ошибка загрузки files.json</p>';
-                console.error(err);
-            });
-    </script>
+<!-- ВИДЕО -->
+<section class="page" id="page-videos">
+    <div class="feed" id="feed-videos"></div>
+</section>
+
+<script>
+    // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+    document.querySelectorAll(".tab").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+            btn.classList.add("active");
+            document.getElementById("page-" + btn.dataset.page).classList.add("active");
+            window.scrollTo({ top: 0 });
+        });
+    });
+
+    // ТУМБЛЕР 4K
+    const homeVideo = document.getElementById("home-video");
+    const qualityToggle = document.getElementById("quality-toggle");
+    qualityToggle.addEventListener("change", () => {
+        homeVideo.src = qualityToggle.checked
+            ? "content/gkarenteaser4K.mp4"
+            : "content/gkarenteaser.mp4";
+        homeVideo.load();
+        homeVideo.play().catch(() => {});
+    });
+
+    // ОТРИСОВКА ЛЕНТ
+    function renderImages(containerId, items) {
+        const feed = document.getElementById(containerId);
+        if (!items || items.length === 0) {
+            feed.innerHTML = '<p class="empty">Пока пусто</p>';
+            return;
+        }
+        items.forEach(src => {
+            const el = document.createElement("img");
+            el.src = src;
+            el.alt = "гкарен";
+            el.loading = "lazy";
+            feed.appendChild(el);
+        });
+    }
+
+    function renderVideos(containerId, items) {
+        const feed = document.getElementById(containerId);
+        if (!items || items.length === 0) {
+            feed.innerHTML = '<p class="empty">Пока пусто</p>';
+            return;
+        }
+        items.forEach(src => {
+            const el = document.createElement("video");
+            el.src = src;
+            el.controls = true;
+            el.preload = "metadata";
+            feed.appendChild(el);
+        });
+    }
+
+    fetch("files.json")
+        .then(res => res.json())
+        .then(data => {
+            renderImages("feed-images", data.images || []);
+            renderImages("feed-gifs", data.gifs || []);
+            renderVideos("feed-videos", data.videos || []);
+        })
+        .catch(err => {
+            const msg = '<p class="empty">Ошибка загрузки files.json</p>';
+            document.getElementById("feed-images").innerHTML = msg;
+            document.getElementById("feed-gifs").innerHTML = msg;
+            document.getElementById("feed-videos").innerHTML = msg;
+            console.error(err);
+        });
+</script>
 
 </body>
 </html>
