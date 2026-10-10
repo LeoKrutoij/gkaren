@@ -44,12 +44,14 @@
             text-decoration: none;
             cursor: pointer;
             user-select: none;
+            transition: color 0.3s;
         }
         nav .brand img {
             width: 32px;
             height: 32px;
             border-radius: 6px;
             display: block;
+            transition: filter 0.3s;
         }
         nav .tabs {
             display: flex;
@@ -183,7 +185,9 @@
             background: #1a0000;
             border-bottom: 1px solid #660000;
         }
-        body.devil-mode nav .brand { color: #ff2222; }
+        body.devil-mode nav .brand {
+            color: #ff2222;
+        }
         body.devil-mode nav .tab {
             border-color: #660000;
             color: #ff8888;
@@ -208,7 +212,7 @@
 
 <nav>
     <a class="brand" id="brand-logo">
-        <img src="favicon.png" alt="logo">
+        <img id="brand-img" src="favicon.png" alt="logo">
         <span id="brand-text">gkaren.com</span>
     </a>
     <div class="tabs">
@@ -308,10 +312,13 @@
 
     // ====== ПАСХАЛКА: 10 КЛИКОВ ПО ЛОГОТИПУ ======
     const brandLogo = document.getElementById("brand-logo");
-    const brandText = document.getElementById("brand-text");
+    const brandImg = document.getElementById("brand-img");
     const devilSound = new Audio("sfx/gkarendyavoldrop.mp3");
     devilSound.preload = "auto";
     devilSound.volume = 0.8;
+
+    const NORMAL_IMG = "favicon.png";
+    const DEVIL_IMG  = "content/favicondyavol.png";
 
     let clickCount = 0;
     let devilMode = false;
@@ -325,18 +332,15 @@
             devilMode = !devilMode;
 
             if (devilMode) {
-                // ВКЛЮЧАЕМ ДЬЯВОЛА
                 document.body.classList.add("devil-mode");
                 document.title = "Гкарен дьявол!!!";
-                brandText.textContent = "Гкарен дьявол!!!";
-                // играем звук один раз
+                brandImg.src = DEVIL_IMG;
                 devilSound.currentTime = 0;
                 devilSound.play().catch(() => {});
             } else {
-                // ВЫКЛЮЧАЕМ
                 document.body.classList.remove("devil-mode");
                 document.title = "Гкарен";
-                brandText.textContent = "gkaren.com";
+                brandImg.src = NORMAL_IMG;
                 devilSound.pause();
                 devilSound.currentTime = 0;
             }
