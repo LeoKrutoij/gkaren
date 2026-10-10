@@ -196,6 +196,70 @@
             display: block;
         }
 
+        /* ЛЕСТНИЦА ДЕМОНОВ */
+        .ladder-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 10px;
+        }
+        .ladder-intro {
+            text-align: center;
+            color: #aaa;
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .ladder-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .ladder-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 14px 18px;
+            transition: transform 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .ladder-item:hover {
+            transform: translateX(6px);
+            background: #1a1a1a;
+            border-color: #444;
+        }
+        .ladder-num {
+            font-size: 1.4em;
+            font-weight: bold;
+            min-width: 44px;
+            text-align: center;
+            color: #888;
+        }
+        .ladder-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+        .ladder-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #fff;
+        }
+        .ladder-diff {
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* ЦВЕТА СЛОЖНОСТИ */
+        .diff-easy    { color: #4caf50 !important; }
+        .diff-medium  { color: #ffeb3b !important; }
+        .diff-hard    { color: #ff9800 !important; }
+        .diff-insane  { color: #f44336 !important; }
+        .diff-extreme { color: #b71c1c !important; }
+
         /* ЛЕНТА */
         .feed {
             display: flex;
@@ -264,6 +328,20 @@
         body.devil-mode .section-title {
             color: #ff2222;
         }
+        body.devil-mode .ladder-item {
+            background: #1a0000;
+            border-color: #440000;
+        }
+        body.devil-mode .ladder-item:hover {
+            background: #2a0000;
+            border-color: #880000;
+        }
+        body.devil-mode .ladder-intro {
+            color: #cc6666;
+        }
+        body.devil-mode .ladder-name {
+            color: #ff4444;
+        }
     </style>
 </head>
 <body>
@@ -279,6 +357,7 @@
         <button class="tab" data-page="gifs">Гифки</button>
         <button class="tab" data-page="videos">Видео</button>
         <button class="tab" data-page="memes">Мемы</button>
+        <button class="tab" data-page="ladder">Лестница демонов</button>
     </div>
     <a class="discord-btn"
        id="discord-link"
@@ -305,7 +384,6 @@
             </span>
         </label>
 
-        <!-- РАЗДЕЛИТЕЛЬ -->
         <div class="divider"></div>
 
         <!-- КТО ТАКОЙ ГКАРЕН -->
@@ -318,7 +396,23 @@
                 allowfullscreen></iframe>
         </div>
 
-        <!-- РАЗДЕЛИТЕЛЬ -->
+        <div class="divider"></div>
+
+        <!-- КОЛЛАБОРАЦИИ ПРО ГКАРЕНА -->
+        <h2 class="section-title">Коллаборации про Гкарена</h2>
+        <div class="yt-block">
+            <iframe
+                src="https://www.youtube.com/embed/YXkFjdYK9ak"
+                title="Коллаборация про Гкарена 1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            <iframe
+                src="https://www.youtube.com/embed/Dr3l4NXGXIA"
+                title="Коллаборация про Гкарена 2"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+
         <div class="divider"></div>
 
         <!-- ВИДЕО ГКАРЕНА -->
@@ -357,6 +451,96 @@
 <!-- МЕМЫ -->
 <section class="page" id="page-memes">
     <div class="feed" id="feed-memes"></div>
+</section>
+
+<!-- ЛЕСТНИЦА ДЕМОНОВ -->
+<section class="page" id="page-ladder">
+    <div class="ladder-wrap">
+        <p class="ladder-intro">
+            🪜 <b>Лестница демонов от Гкарена</b><br>
+            Список уровней, которые нужно пройти, чтобы стать топовым игроком Geometry Dash.
+        </p>
+
+        <ol class="ladder-list">
+            <li class="ladder-item">
+                <span class="ladder-num">1</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Demon Forest</span>
+                    <span class="ladder-diff diff-easy">Изи демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">2</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Clubstep</span>
+                    <span class="ladder-diff diff-easy">Изи / Медиум демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">3</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Clubstep V2</span>
+                    <span class="ladder-diff diff-medium">Медиум демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">4</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Theory of SkriLLex</span>
+                    <span class="ladder-diff diff-medium">Медиум демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">5</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Viper</span>
+                    <span class="ladder-diff diff-hard">Хард демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">6</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Luminum</span>
+                    <span class="ladder-diff diff-insane">Инсэйн демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">7</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Bloodbath</span>
+                    <span class="ladder-diff diff-extreme">Экстрим демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">8</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Bloodlust</span>
+                    <span class="ladder-diff diff-extreme">Экстрим демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">9</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Slaughterhouse</span>
+                    <span class="ladder-diff diff-extreme">Экстрим демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">10</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">Tidal Wave</span>
+                    <span class="ladder-diff diff-extreme">Экстрим демон</span>
+                </div>
+            </li>
+            <li class="ladder-item">
+                <span class="ladder-num">11</span>
+                <div class="ladder-info">
+                    <span class="ladder-name">SL80</span>
+                    <span class="ladder-diff diff-extreme">Экстрим демон</span>
+                </div>
+            </li>
+        </ol>
+    </div>
 </section>
 
 <!-- ФИНАЛЬНАЯ КАРТИНКА -->
