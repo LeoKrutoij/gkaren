@@ -7,13 +7,17 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { background: #000; }
+        html, body {
+            background: #000;
+            transition: background 0.5s;
+        }
         body {
             color: #fff;
             font-family: Arial, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: color 0.5s;
         }
 
         /* ВЕРХНЯЯ ПАНЕЛЬ */
@@ -28,6 +32,7 @@
             background: #111;
             border-bottom: 1px solid #222;
             flex-wrap: wrap;
+            transition: background 0.5s, border-color 0.5s;
         }
         nav .brand {
             display: flex;
@@ -37,6 +42,8 @@
             font-size: 1.2em;
             color: #fff;
             text-decoration: none;
+            cursor: pointer;
+            user-select: none;
         }
         nav .brand img {
             width: 32px;
@@ -166,14 +173,43 @@
             user-select: none;
             pointer-events: none;
         }
+
+        /* ====== ДЬЯВОЛЬСКИЙ РЕЖИМ ====== */
+        body.devil-mode {
+            background: radial-gradient(circle at top, #3a0000 0%, #000 70%);
+            color: #ff4444;
+        }
+        body.devil-mode nav {
+            background: #1a0000;
+            border-bottom: 1px solid #660000;
+        }
+        body.devil-mode nav .brand { color: #ff2222; }
+        body.devil-mode nav .tab {
+            border-color: #660000;
+            color: #ff8888;
+        }
+        body.devil-mode nav .tab:hover {
+            background: #2a0000;
+            color: #ffcccc;
+        }
+        body.devil-mode nav .tab.active {
+            background: #ff2222;
+            color: #000;
+            border-color: #ff2222;
+        }
+        body.devil-mode .quality-toggle { color: #ff6666; }
+        body.devil-mode .empty { color: #883333; }
+        body.devil-mode .footer-img {
+            filter: hue-rotate(-30deg) saturate(2) brightness(0.8);
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <a class="brand" href="#">
+    <a class="brand" id="brand-logo">
         <img src="favicon.png" alt="logo">
-        <span>gkaren.com</span>
+        <span id="brand-text">gkaren.com</span>
     </a>
     <div class="tabs">
         <button class="tab active" data-page="home">Главная</button>
@@ -221,7 +257,7 @@
     <div class="feed" id="feed-videos"></div>
 </section>
 
-<!-- ФИНАЛЬНАЯ КАРТИНКА (видна на всех вкладках, всегда внизу) -->
+<!-- ФИНАЛЬНАЯ КАРТИНКА -->
 <img src="content/timudakatheend.jpg" alt="the end" class="footer-img">
 
 <script>
@@ -267,6 +303,43 @@
                 sfx.pause();
                 sfx.currentTime = 0;
             } catch (e) {}
+        }
+    });
+
+    // ====== ПАСХАЛКА: 10 КЛИКОВ ПО ЛОГОТИПУ ======
+    const brandLogo = document.getElementById("brand-logo");
+    const brandText = document.getElementById("brand-text");
+    const devilSound = new Audio("sfx/gkarendyavoldrop.mp3");
+    devilSound.preload = "auto";
+    devilSound.volume = 0.8;
+
+    let clickCount = 0;
+    let devilMode = false;
+
+    brandLogo.addEventListener("click", (e) => {
+        e.preventDefault();
+        clickCount++;
+
+        if (clickCount >= 10) {
+            clickCount = 0;
+            devilMode = !devilMode;
+
+            if (devilMode) {
+                // ВКЛЮЧАЕМ ДЬЯВОЛА
+                document.body.classList.add("devil-mode");
+                document.title = "Гкарен дьявол!!!";
+                brandText.textContent = "Гкарен дьявол!!!";
+                // играем звук один раз
+                devilSound.currentTime = 0;
+                devilSound.play().catch(() => {});
+            } else {
+                // ВЫКЛЮЧАЕМ
+                document.body.classList.remove("devil-mode");
+                document.title = "Гкарен";
+                brandText.textContent = "gkaren.com";
+                devilSound.pause();
+                devilSound.currentTime = 0;
+            }
         }
     });
 
