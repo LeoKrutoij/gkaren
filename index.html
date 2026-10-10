@@ -61,6 +61,22 @@
         nav .tab:hover { background: #1a1a1a; color: #fff; }
         nav .tab.active { background: #fff; color: #000; border-color: #fff; }
 
+        /* КНОПКА DISCORD */
+        nav .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #5865F2;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        nav .discord-btn:hover { background: #4752c4; }
+
         /* СТРАНИЦЫ */
         .page { display: none; padding: 20px 10px; }
         .page.active { display: block; }
@@ -152,6 +168,13 @@
         <button class="tab" data-page="gifs">Гифки</button>
         <button class="tab" data-page="videos">Видео</button>
     </div>
+    <a class="discord-btn"
+       id="discord-link"
+       href="https://discord.gg/bombom"
+       target="_blank"
+       rel="noopener noreferrer">
+        💬 Discord
+    </a>
 </nav>
 
 <!-- ГЛАВНАЯ -->
@@ -206,6 +229,30 @@
             : "content/gkarenteaser.mp4";
         homeVideo.load();
         homeVideo.play().catch(() => {});
+    });
+
+    // SFX ПРИ ПЕРЕХОДЕ В DISCORD
+    const sfx = new Audio("sfx/gigamegateam.mp3");
+    sfx.preload = "auto";
+    sfx.volume = 0.7;
+
+    document.getElementById("discord-link").addEventListener("click", () => {
+        // сброс и запуск с начала
+        try {
+            sfx.pause();
+            sfx.currentTime = 0;
+            sfx.play().catch(() => {});
+        } catch (e) {}
+    });
+
+    // ОСТАНОВКА ЗВУКА, КОГДА ВОЗВРАЩАЕШЬСЯ НА ВКЛАДКУ САЙТА
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            try {
+                sfx.pause();
+                sfx.currentTime = 0;
+            } catch (e) {}
+        }
     });
 
     // ОТРИСОВКА ЛЕНТ
